@@ -1,0 +1,64 @@
+body {
+  padding: 5px 0 0 0;
+  background-color: #c9ddff;
+}
+
+
+.panel {
+	background-color: #f4f8ff;
+	border-radius: 10px;	
+}
+
+.bar-photo {
+  float: left;
+}
+
+.actual-photo {
+  border-radius: 5px;
+}
+
+.bar-name {
+  float: left;
+  font-size: 15px;
+  margin: 0 0 0 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.going-button {
+  float: right;
+}
+
+.logout-button {
+  style: none;
+}
+
+.search-bar {
+  padding: 0 0 20px 0;
+}
+
+#rating {
+  font-size: 12px;
+  font-style: italic;
+}
+
+#rating-num {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.navbar {
+  background-color: #c9ddff;
+}
+
+hr {
+  width: 200px;
+}
+
+footer {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
