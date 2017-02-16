@@ -4,6 +4,7 @@ var express = require('express');
 var routes = require('./app/routes/index.js');
 var passport = require('passport');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var session = require('express-session');
 var mongoose = require('mongoose');
 
@@ -19,7 +20,13 @@ mongoose.connect('mongodb://localhost:27017/nightlife-app');
 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
-app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(cors());
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 app.use(session({
   secret: '7h1515453cr3t',

@@ -2,25 +2,34 @@
 
   angular
     .module('main', ['ngResource', 'ngStorage'])
-    .controller('results', ['$scope', '$resource', '$localStorage', function($scope, $resource, $localStorage) {
+    .controller('results', ['$scope', '$resource', '$localStorage', '$window', '$q', function($scope, $resource, $localStorage, $window, $q) {
 
       const key = 'AIzaSyD3kuqSX4BHN4rNw3XvfCm_5yU4qQOHBFE';
-      
-      
 
+      var Going = $resource('/going'); 
+
+      $scope.getGoers = function (placeId) {
+
+        var Goers = $resource('/api/' + placeId + '/getgoers')
+        Goers.get(function(goers) {
+
+          if (goers.going != undefined) {
+             return (goers.going.length);
+
+          } else {
+            return 0;
+          }
+          //return goers.going.length;
+        });
+      }
+      
 
       $scope.getResults = function (inputType) {        
         $scope.bars = [];
-
-        // if (!$localStorage.input) {
-        //   $localStorage.input = $scope.input;
-        //   var Results = $resource('/bars/?search=' + $localStorage.input);
-        //   $localStorage.input = undefined;
-        // } else {
-        //   var Results = $resource('/bars/?search=' + $localStorage.input);
-        // }
         
-        $localStorage.input = $scope.input;
+        if ($scope.input) {
+          $localStorage.input = $scope.input;
+        }       
 
         var Results = $resource('/bars/?search=' + inputType);
 
@@ -28,14 +37,64 @@
 
         Results.query(function (results) {
           results.forEach(function (element) {
+            var Goers = $resource('/api/' + element.id + '/getgoers');
+
+            Goers.get(function(goers) {
+            var numberOfGoers;
+            if (goers.going != undefined) {
+               numberOfGoers = (goers.going.length);
+
+            } else {
+              numberOfGoers = 0;
+            } 
+
             $scope.bars.push({
               name: element.name,
               photo: 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference=' + element.photos[0].photo_reference + '&key=' + key,
               rating: element.rating,
               id: element.id,
-              going: goingArr.length
+              going: numberOfGoers
             });
+            });
+            
           });
+        });
+
+      };
+
+      function function1(placeId, callback) {
+        Going.save({placeId: placeId});
+        callback();
+      }
+
+      function function2(placeId) {
+        var Goers = $resource('/api/' + placeId + '/getgoers')
+
+        Goers.get(function(goer) {
+          
+          var findId = goer.id;
+
+          var numberOfGoers = goer.going.length;
+          
+          $scope.bars.forEach(function (element) {
+
+            if (element.id == findId) {
+              element.going = numberOfGoers;
+            }
+
+          });
+
+        });
+      }
+
+      // function1(placeId, function () {
+      //   function2(placeId);
+      // });
+
+      $scope.goingThere = function (placeId) {
+
+        function1(placeId, function () {
+          function2(placeId);
         });
 
       };
@@ -47,7 +106,6 @@
       $scope.clearLocalStorageInput = function () {
         $localStorage.input = undefined;
       }
-
 
     }])
 

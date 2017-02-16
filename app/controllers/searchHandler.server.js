@@ -7,13 +7,31 @@ function searchHandler () {
 
     this.goingThere = function (req, res) {
     	if (req.isAuthenticated()) {
-    		console.log(req.body);
-    		console.log(req.user.twitter.id);
-    	} else {
-    		res.redirect('/auth/twitter');
-          
-    	}
+    		var placeId = req.body.placeId;
+    		var userid = req.user.twitter.id;
+            
+            Places.findOne({id: placeId}, function (err, place) {
+              if (err) {throw err;}
+              else if (place) {
+             	place.going = place.going.push(userid); 
+              } else {
+              	var newPlace = new Places();
+                
+                newPlace.id = placeId
+                newPlace.going.push(userid);
 
+                newPlace.save(); 
+              }
+            }); 
+    	} 
+    };
+
+    this.getGoers = function (req, res) {
+      Places.find({id: req.params.placeId})
+        .exec(function (err, result) {
+          if (err) {throw err;}
+          res.json(result[0]);
+        })
     };
 
 };
