@@ -73,7 +73,7 @@ target.appendChild(spinner.el);
 
       function function1(placeId, callback) {
         Going.save({placeId: placeId});
-          $timeout(function() {callback()}, 100);
+          $timeout(function() {callback()}, 500);
         //$setTimeout(callback(), 5000);
       }
 

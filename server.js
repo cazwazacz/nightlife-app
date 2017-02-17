@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 require('dotenv').load();
 require('./app/config/passport.js')(passport);
 
-mongoose.connect('mongodb://localhost:27017/nightlife-app');
+mongoose.connect(process.env.MONGOLAB_URI);
 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
