@@ -2,7 +2,7 @@
 
   angular
     .module('main', ['ngResource', 'ngStorage'])
-    .controller('results', ['$scope', '$resource', '$localStorage', '$window', '$q', function($scope, $resource, $localStorage, $window, $q) {
+    .controller('results', ['$scope', '$resource', '$localStorage', '$window', '$timeout', function($scope, $resource, $localStorage, $window, $timeout) {
 
       const key = 'AIzaSyD3kuqSX4BHN4rNw3XvfCm_5yU4qQOHBFE';
 
@@ -64,26 +64,29 @@
 
       function function1(placeId, callback) {
         Going.save({placeId: placeId});
-        callback();
+          $timeout(function() {callback()}, 100);
+        //$setTimeout(callback(), 5000);
       }
 
       function function2(placeId) {
+        console.log('500 ms later');
         var Goers = $resource('/api/' + placeId + '/getgoers')
 
         Goers.get(function(goer) {
           
           var findId = goer.id;
 
-          var numberOfGoers = goer.going.length;
-          
-          $scope.bars.forEach(function (element) {
+          // if (goer.hasOwnProperty('going')) {
+            var numberOfGoers = goer.going.length;
+            
+            $scope.bars.forEach(function (element) {
 
-            if (element.id == findId) {
-              element.going = numberOfGoers;
-            }
+              if (element.id == findId) {
+                element.going = numberOfGoers;
+              }
 
-          });
-
+            });
+          // }
         });
       }
 
