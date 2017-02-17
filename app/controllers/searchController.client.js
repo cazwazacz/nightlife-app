@@ -1,3 +1,7 @@
+var target = document.getElementById('spinner');
+var spinner = new Spinner().spin();
+target.appendChild(spinner.el);
+
 (function () {
 
   angular
@@ -6,9 +10,12 @@
 
       const key = 'AIzaSyD3kuqSX4BHN4rNw3XvfCm_5yU4qQOHBFE';
 
+      
+
       var Going = $resource('/going'); 
 
       $scope.getGoers = function (placeId) {
+                                             
 
         var Goers = $resource('/api/' + placeId + '/getgoers')
         Goers.get(function(goers) {
@@ -24,7 +31,8 @@
       }
       
 
-      $scope.getResults = function (inputType) {        
+      $scope.getResults = function (inputType) {  
+        $scope.loading = true;       
         $scope.bars = [];
         
         if ($scope.input) {
@@ -58,6 +66,7 @@
             });
             
           });
+          $scope.loading = false;
         });
 
       };
@@ -69,7 +78,6 @@
       }
 
       function function2(placeId) {
-        console.log('500 ms later');
         var Goers = $resource('/api/' + placeId + '/getgoers')
 
         Goers.get(function(goer) {

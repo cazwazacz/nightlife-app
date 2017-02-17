@@ -15,13 +15,14 @@ module.exports = function(app, passport) {
 
   var goingButtonLoggedIn = '<input class="btn btn-default" type="submit" value="{{ bar.going }} going">';
   var goingButtonNotLoggedIn = '<a href="/auth/twitter"><input type="button" class="btn btn-default" value="{{ bar.going }} going"></a>';
+  var loginTwitterButton = '<span class="fa fa-twitter"></span>  twitter log in'
 
   app.route('/')
     .get(function(req, res) {
       if (req.isAuthenticated()) {
         res.render('index', {loggingHref: '/logout', loginFunc: 'clearLocalStorageInput()', logButton: 'log out', goingButton: goingButtonLoggedIn});
       } else {
-        res.render('index', {loggingHref: '/auth/twitter', loginFunc: '', logButton: 'log in', goingButton: goingButtonNotLoggedIn});
+        res.render('index', {loggingHref: '/auth/twitter', loginFunc: '', logButton: loginTwitterButton, goingButton: goingButtonNotLoggedIn});
       }
     });
 
